@@ -61,7 +61,7 @@
                         <!-- End::slide__category -->
                         <!-- Start::slide -->
                         <li class="slide">
-                            <a href="widgets.html" class="side-menu__item">
+                            <a href="{{ route('admin.index') }}" class="side-menu__item">
                                 <i class="ri-home-8-line side-menu__icon"></i>
 
                                 <span class="side-menu__label">Dashboards</span>
@@ -73,14 +73,31 @@
                         <li class="slide has-sub">
                             <a href="javascript:void(0);" class="side-menu__item">
                                 <i class="ri-inbox-line side-menu__icon"></i>
+                                <span class="side-menu__label">Category Area</span>
+                                <i class="ri ri-arrow-right-s-line side-menu__angle"></i>
+                            </a>
+                            <ul class="slide-menu child1">
+                                <li class="slide"><a href="{{ route('allCategory') }}" class="side-menu__item">All
+                                        Category</a></li>
+                                <li class="slide"><a href="{{ route('addCategory') }}" class="side-menu__item">Add
+                                        Category</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="slide has-sub">
+                            <a href="javascript:void(0);" class="side-menu__item">
+                                <i class="ri-inbox-line side-menu__icon"></i>
                                 <span class="side-menu__label">Product Area</span>
                                 <i class="ri ri-arrow-right-s-line side-menu__angle"></i>
                             </a>
                             <ul class="slide-menu child1">
-                                <li class="slide"><a href="accordion.html" class="side-menu__item">All Product</a></li>
-                                <li class="slide"><a href="alerts.html" class="side-menu__item">Add Product</a></li>
+                                <li class="slide"><a href="{{ route('allProduct') }}" class="side-menu__item">All
+                                        Product</a></li>
+                                <li class="slide"><a href="{{ route('addProduct') }}" class="side-menu__item">Add
+                                        Product</a></li>
                             </ul>
                         </li>
+
 
                         <!-- End::slide -->
 
@@ -648,7 +665,7 @@
 
         <div class="content">
             <!-- Start::main-content -->
-            @yield('content')
+            @yield('dashborad_header')
             <!-- Start::main-content -->
         </div>
         <!-- ========== Search Modal ========== -->

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class productController extends Controller
 {
+
     function addProduct()
     {
         return view('admin.Product.addProduct');
@@ -14,6 +15,7 @@ class productController extends Controller
     {
         return view('admin.Product.allProduct');
     }
+
     function adminIndex()
     {
         return view('admin.dashboard');
