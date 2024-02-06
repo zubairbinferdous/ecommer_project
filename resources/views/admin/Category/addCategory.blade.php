@@ -8,8 +8,8 @@
                         <h5 class="box-title">Add Category Area</h5>
                     </div>
                     <div class="box-body">
-                        <form action="{{ route('store.category') }}" method="POST">
-
+                        <form action="{{ route('store.category') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="">
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Category title</label>
@@ -21,7 +21,7 @@
                             <div class="my-5">
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Category img</label>
-                                    <input type="file" name="fileInput" id="file-input"
+                                    <input type="file" name="cate_img" id="file-input"
                                         class="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70
                                     file:bg-transparent file:border-0
                                     file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4

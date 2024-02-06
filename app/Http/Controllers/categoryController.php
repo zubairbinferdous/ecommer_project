@@ -16,22 +16,32 @@ class categoryController extends Controller
     // all category 
     function allCategory()
     {
-        return view('admin.Category.allCategory');
+        $categoryData = category::get();
+        return view('admin.Category.allCategory', compact('categoryData'));
     }
     // store category 
     function storeCategory(Request $request)
     {
 
-        $img = $request->file('fileInput');
-        $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-        $save_url = 'upload/category/' . $name_gen;
+        if ($request->file('cate_img')) {
 
-        category::insert([
-            'category_title' => $request->cat_title,
-            'category_url' => strtolower(str_replace(' ', '_', $request->cat_title)),
-            'category_image' => $save_url,
-            'category_description' => $request->description,
-            'position' => $request->position,
-        ]);
+            $img = $request->file('cate_img');
+            $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
+
+            $save_url = 'upload/category/' . $name_gen;
+            $img->move(public_path('upload/category/'), $name_gen);
+
+            category::insert([
+                'category_title' => $request->cat_title,
+                'category_url' => strtolower(str_replace(' ', '-', $request->cat_title)),
+                'category_image' => $save_url,
+                'category_description' => $request->description,
+                'position' => $request->position,
+            ]);
+
+            return redirect()->route('allCategory');
+        } else {
+            return  'error';
+        }
     }
 }
