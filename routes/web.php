@@ -31,6 +31,7 @@ Route::get('/admin/index', [productController::class, 'adminIndex'])->name('admi
 //   product area 
 Route::get('/addProduct', [productController::class, 'addProduct'])->name('addProduct');
 Route::get('/allProduct', [productController::class, 'allProduct'])->name('allProduct');
+Route::Post('/store.product', [productController::class, 'productStore'])->name('store.product');
 //  category area 
 Route::get('/addCategory', [categoryController::class, 'addCategory'])->name('addCategory');
 Route::get('/allCategory', [categoryController::class, 'allCategory'])->name('allCategory');

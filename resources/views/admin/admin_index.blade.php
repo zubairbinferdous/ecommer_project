@@ -11,6 +11,15 @@
     <meta name="keywords"
         content="analytics dashboard,jobs dashboard,crm dashboard examples,personal dashboard,sales dashboard sample,best crm dashboard,crypto dashboard template,sales analytics dashboard,stocks dashboard,hrm dashboard,ecommerce admin panel template,sales admin dashboard,admin panel for ecommerce website,website template ecommerce,template dashboard,course dashboard,template ecommerce website">
 
+    <!-- Bootstrap CDN Links -->
+    <!-- include libraries(jQuery, bootstrap) -->
+    {{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> --}}
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('backend/assets/img/brand-logos/favicon.ico') }}">
 
@@ -25,6 +34,35 @@
 
     <!-- Color Picker Css -->
     <link rel="stylesheet" href="{{ asset('backend/assets/libs/@simonwep/pickr/themes/nano.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('backend/assets/libs/dropzone/dropzone.css') }}">
+    <!-- filepond File Upload  Css -->
+    <link rel="stylesheet" href="{{ asset('backend/assets/libs/filepond/filepond.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('backend/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('backend/assets/libs/filepond-plugin-image-edit/filepond-plugin-image-edit.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('backend/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('/assets/libs/flatpickr/flatpickr.min.css') }}">
+
+    <link id="style" href="{{ asset('backend/assets/libs/quill/quill.snow.css') }}" rel="stylesheet">
+
+
+    <!-- Flatpickr Css -->
+    <link rel="stylesheet" href="{{ asset('backend/assets/libs/flatpickr/flatpickr.min.css') }}">
+
+    <!-- Color Picker Css -->
+    <link rel="stylesheet" href="{{ asset('backend/assets/libs/@simonwep/pickr/themes/classic.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/libs/@simonwep/pickr/themes/monolith.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/libs/@simonwep/pickr/themes/nano.min.css') }}">
+
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+
+
+
+
 
 </head>
 
@@ -858,6 +896,47 @@
 
     <!-- Custom-Switcher JS -->
     <script src="{{ asset('backend/assets/js/custom-switcher.js') }}"></script>
+
+    <script src="{{ asset('backend/assets/libs/dropzone/dropzone-min.js') }}"></script>
+
+    <!-- Filepond File Upload JS -->
+    <script src="{{ asset('backend/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js') }}">
+    </script>
+    <script src="{{ asset('backend/assets/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js') }}">
+    </script>
+    <script
+        src="{{ asset('backend/assets/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js') }}">
+    </script>
+    <script
+        src="{{ asset('backend/assets/libs/filepond-plugin-file-validate-type/filepond-plugin-file-validate-type.min.js') }}">
+    </script>
+    <script src="{{ asset('backend/assets/libs/filepond-plugin-image-edit/filepond-plugin-image-edit.min.js') }}"></script>
+    <script
+        src="{{ asset('backend/assets/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js') }}">
+    </script>
+    <script src="{{ asset('backend/assets/libs/filepond-plugin-image-crop/filepond-plugin-image-crop.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/libs/filepond-plugin-image-resize/filepond-plugin-image-resize.min.js') }}">
+    </script>
+    <script
+        src="{{ asset('backend/assets/libs/filepond-plugin-image-transform/filepond-plugin-image-transform.min.js') }}">
+    </script>
+    <script src="{{ asset('backend/assets/libs/filepond/filepond.min.js') }}"></script>
+
+    <script src="{{ asset('backend/assets/js/fileupload.js') }}"></script>
+
+    <!-- Flatpickr JS -->
+    <script src="{{ asset('backend/assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/flatpickr.js') }}"></script>
+
+    <!-- Color Picker JS -->
+    <script src="{{ asset('backend/assets/libs/@simonwep/pickr/pickr.es5.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/colorpicker.js') }}"></script>
+
+    <!-- Quill Editor JS -->
+    <script src="{{ asset('backend/assets/libs/quill/quill.min.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/quill.js') }}"></script>
+
+    @yield('script')
 
 </body>
 
