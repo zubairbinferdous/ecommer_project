@@ -54,6 +54,7 @@ class productController extends Controller
                 'SeoTitle' => $request->seoTitle,
                 'SeoImages' => $saveSeoImg,
                 'SeoDescription' => $request->seoDescription,
+                'description' => $request->description,
                 'Category_id' => $request->category,
                 'PlacementInShop' => $request->position,
                 'ProductStatus' => $request->status,
@@ -61,11 +62,26 @@ class productController extends Controller
 
             ]);
         }
-        if ($request->file('fileMulti')) {
-            $itemId = $request->input('ProductId');
-            foreach ((array)$request->fileDescription as $image) {
 
-                $image = $request->file('fileMulti');
+        $extraFileDescriptions = $request->file('ExtraFileDescription');
+        $extraDescriptions = $request->input('ExtraDescription');
+        $productId = $request->input('ProductId');
+        foreach ($extraFileDescriptions as $key => $extraFileDescription) {
+
+            $name_gen = hexdec(uniqid()) . '.' . $extraFileDescription->getClientOriginalExtension();
+            $saveImg = 'upload/product/' . $name_gen;
+            $extraFileDescription->move(public_path('upload/product/'), $name_gen);
+            description::create([
+                'product_id' => $productId,
+                'product_images' => $saveImg,
+                'descriptions' => $extraDescriptions[$key],
+            ]);
+        }
+
+
+        if ($request->hasFile('fileMulti')) {
+            $itemId = $request->input('ProductId');
+            foreach ($request->file('fileMulti') as $image) {
                 $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
                 $saveImg = 'upload/product/' . $name_gen;
                 $image->move(public_path('upload/product/'), $name_gen);
@@ -92,20 +108,6 @@ class productController extends Controller
                     'product_id' => $itemId,
                     'Product_title' => $title,
                     'price' => $price,
-                ]);
-            }
-        }
-        if ($request->description) {
-            $DescriptionId = $request->input('ProductId');
-            $Descriptions = (array)$request->input('description');
-            $count = count($Descriptions);
-
-            for ($i = 0; $i < $count; $i++) {
-                $description = $Descriptions[$i];
-                description::create([
-                    'product_id' => $DescriptionId,
-                    'descriptions' => $description,
-
                 ]);
             }
         } else {

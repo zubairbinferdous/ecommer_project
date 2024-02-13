@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('SeoTitle');
             $table->string('SeoImages');
             $table->longText('SeoDescription');
+            $table->longText('description');
             $table->integer('Category_id');
             $table->integer('PlacementInShop');
             $table->string('ProductStatus');

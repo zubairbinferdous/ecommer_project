@@ -61,6 +61,25 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
 
 
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/img/brand-logos/favicon.ico">
+
+    <!-- Main JS -->
+    <script src="../assets/js/main.js"></script>
+
+    <!-- Style Css -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+
+    <!-- Simplebar Css -->
+    <link rel="stylesheet" href="../assets/libs/simplebar/simplebar.min.css">
+
+    <!-- Color Picker Css -->
+    <link rel="stylesheet" href="../assets/libs/@simonwep/pickr/themes/nano.min.css">
+
+
+
+
+
 
 
 
@@ -937,6 +956,9 @@
     <script src="{{ asset('backend/assets/js/quill.js') }}"></script>
 
     @yield('script')
+
+
+
 
 </body>
 

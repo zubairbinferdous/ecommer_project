@@ -50,6 +50,8 @@
                                     </div>
                                 </div>
 
+
+
                             </div>
                             <div class="my-5">
 
@@ -59,7 +61,7 @@
                                     </div>
                                     <div>
                                         <label for="file-input-medium" class="sr-only">Choose file</label>
-                                        <input type="file" name="fileMulti" id="file-input-medium"
+                                        <input type="file" name="fileMulti[]" id="file-input-medium"
                                             class="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70
                                           file:bg-transparent file:border-0
                                           file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
@@ -100,7 +102,7 @@
                                         <div class="box-body" id="description">
                                             <div>
                                                 <label class="ti-form-label mb-2">Product Description</label>
-                                                <textarea name="description[]" id="dis_editor" cols="" rows=""></textarea>
+                                                <textarea name="description" id="dis_editor" cols="" rows=""></textarea>
                                             </div>
                                         </div>
 
@@ -271,10 +273,10 @@
         <div>
             <label class="ti-form-label mt-7">Product images</label>
             <label for="file-input-medium" class="sr-only">Choose file</label>
-            <input type="file" name="fileDescription[]" id="file-input-medium" class="block mb-2 w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-3 file:px-4 dark:file:bg-black/20 dark:file:text-white/70">
+            <input type="file" name="ExtraFileDescription[]" id="file-input-medium" class="block mb-2 w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-3 file:px-4 dark:file:bg-black/20 dark:file:text-white/70">
 
             <label class="ti-form-label mb-2">Product Description</label>
-            <textarea name="description[]" id="dis_editor${id}" cols="" rows=""></textarea>
+            <textarea name="ExtraDescription[]" id="dis_editor${id}" cols="" rows=""></textarea>
 
             <button class="removeEditorBtn ti-btn bg-indigo-500 text-white hover:bg-indigo-600 focus:ring-indigo-500 dark:focus:ring-offset-white/10" data-id="${id}">Remove</button>
         </div>
