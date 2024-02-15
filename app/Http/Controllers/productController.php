@@ -61,58 +61,57 @@ class productController extends Controller
                 'ProductSchedule' => $request->schedule,
 
             ]);
-        }
+            $extraFileDescriptions = $request->file('ExtraFileDescription');
+            $extraDescriptions = $request->input('ExtraDescription');
+            $productId = $request->input('ProductId');
+            foreach ($extraFileDescriptions as $key => $extraFileDescription) {
 
-        $extraFileDescriptions = $request->file('ExtraFileDescription');
-        $extraDescriptions = $request->input('ExtraDescription');
-        $productId = $request->input('ProductId');
-        foreach ($extraFileDescriptions as $key => $extraFileDescription) {
-
-            $name_gen = hexdec(uniqid()) . '.' . $extraFileDescription->getClientOriginalExtension();
-            $saveImg = 'upload/product/' . $name_gen;
-            $extraFileDescription->move(public_path('upload/product/'), $name_gen);
-            description::create([
-                'product_id' => $productId,
-                'product_images' => $saveImg,
-                'descriptions' => $extraDescriptions[$key],
-            ]);
-        }
-
-
-        if ($request->hasFile('fileMulti')) {
-            $itemId = $request->input('ProductId');
-            foreach ($request->file('fileMulti') as $image) {
-                $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+                $name_gen = hexdec(uniqid()) . '.' . $extraFileDescription->getClientOriginalExtension();
                 $saveImg = 'upload/product/' . $name_gen;
-                $image->move(public_path('upload/product/'), $name_gen);
-
-                ProductMultiImg::create([
-                    'product_id' => $itemId,
-                    'product_multi_img' => $saveImg,
+                $extraFileDescription->move(public_path('upload/product/'), $name_gen);
+                description::create([
+                    'product_id' => $productId,
+                    'product_images' => $saveImg,
+                    'descriptions' => $extraDescriptions[$key],
                 ]);
             }
-        }
-        if ($request->input('itemTitle')) {
-            // user item  added 
-            $itemId = $request->input('ProductId');
-            $titles = (array)$request->input('itemTitle');
-            $prices = (array)$request->input('itemPrice');
+            if ($request->hasFile('fileMulti')) {
+                $itemId = $request->input('ProductId');
+                foreach ($request->file('fileMulti') as $image) {
+                    $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+                    $saveImg = 'upload/product/' . $name_gen;
+                    $image->move(public_path('upload/product/'), $name_gen);
 
-            $count = count($titles);
+                    ProductMultiImg::create([
+                        'product_id' => $itemId,
+                        'product_multi_img' => $saveImg,
+                    ]);
+                }
+            }
+            if ($request->input('itemTitle')) {
+                // user item  added 
+                $itemId = $request->input('ProductId');
+                $titles = (array)$request->input('itemTitle');
+                $prices = (array)$request->input('itemPrice');
 
-            for ($i = 0; $i < $count; $i++) {
-                $title = $titles[$i];
-                $price = $prices[$i];
+                $count = count($titles);
 
-                ProductItem::create([
-                    'product_id' => $itemId,
-                    'Product_title' => $title,
-                    'price' => $price,
-                ]);
+                for ($i = 0; $i < $count; $i++) {
+                    $title = $titles[$i];
+                    $price = $prices[$i];
+
+                    ProductItem::create([
+                        'product_id' => $itemId,
+                        'Product_title' => $title,
+                        'price' => $price,
+                    ]);
+                }
             }
         } else {
             'error';
         }
+
+
 
 
         return redirect()->route('allProduct');

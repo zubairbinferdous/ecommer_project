@@ -35,6 +35,7 @@
             </div>
         @endif
         <a href="{{ route('admin.index') }}">admin</a>
+        <a href="{{ route('shop') }}">shop</a>
     </div>
 
     <h1>this is front end home page</h1>
