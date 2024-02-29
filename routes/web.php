@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\productController;
 use App\Http\Controllers\categoryController;
 use App\Http\Controllers\shopController;
+use App\Http\Controllers\attributeController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -25,9 +26,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Front end //
-
 Route::get('/product', [shopController::class, 'productShow'])->name('shop');
-Route::get('/singleProduct', [shopController::class, 'singleProduct'])->name('singleProduct');
+Route::get('/singleProduct/{Product_id}', [shopController::class, 'singleProduct'])->name('singleProduct');
 
 
 // Back end  //
@@ -38,7 +38,20 @@ Route::get('/admin/index', [productController::class, 'adminIndex'])->name('admi
 Route::get('/addProduct', [productController::class, 'addProduct'])->name('addProduct');
 Route::get('/allProduct', [productController::class, 'allProduct'])->name('allProduct');
 Route::Post('/store.product', [productController::class, 'productStore'])->name('store.product');
+// Product variation
+Route::get('/variation/{Product_id}', [productController::class, 'ProductVariation'])->name('variation');
+Route::Post('/AddVariation', [productController::class, 'storeVariation'])->name('store.variation');
+
+
 //  Category area 
 Route::get('/addCategory', [categoryController::class, 'addCategory'])->name('addCategory');
 Route::get('/allCategory', [categoryController::class, 'allCategory'])->name('allCategory');
 Route::post('/store/category', [categoryController::class, 'storeCategory'])->name('store.category');
+// Attribute
+Route::get('/addAttribute', [attributeController::class, 'addAttribute'])->name('addAttribute');
+Route::get('/allAttribute', [attributeController::class, 'allAttribute'])->name('allAttribute');
+Route::Post('/store/Attribute', [attributeController::class, 'storeAttribute'])->name('store.attribute');
+// Attribute value 
+Route::get('/addAttributeValue', [attributeController::class, 'addAttributeValue'])->name('addAttributeValue');
+Route::get('/allAttributeValue', [attributeController::class, 'allAttributeValue'])->name('allAttributeValue');
+Route::Post('/store/AttributeValue', [attributeController::class, 'storeAttributeValue'])->name('store.attributeValue');

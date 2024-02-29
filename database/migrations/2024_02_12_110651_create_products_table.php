@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('ProductName');
             $table->integer('Product_id');
+            $table->integer('Regular_price');
             $table->string('ProductUrl');
             $table->string('ProductImages');
             $table->longText('ProductShortDescription');

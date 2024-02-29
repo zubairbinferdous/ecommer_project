@@ -20,15 +20,22 @@
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Product Name</label>
                                     <input type="text" class="my-auto ti-form-input" placeholder="Product Name"
-                                        name="productName">
+                                        name="productName" required>
                                 </div>
 
                                 @php
                                     $productID = substr(mt_rand(10000000, 99999999), 0, 7);
                                 @endphp
                                 <div class="space-y-2 mt-5">
-                                    <input type="text" class="my-auto ti-form-input" name="ProductId"
+                                    <input type="hidden" class="my-auto ti-form-input" name="ProductId"
                                         placeholder="{{ $productID }}" value="{{ $productID }} " readonly>
+                                </div>
+
+
+                                <div class="space-y-2">
+                                    <label class="ti-form-label mb-0">Product Regular Price</label>
+                                    <input type="number" class="my-auto ti-form-input" placeholder="Product Price"
+                                        name="RegularPrice" required>
                                 </div>
 
                             </div>
@@ -46,7 +53,8 @@
                                           file:bg-transparent file:border-0
                                           file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
                                           file:py-3 file:px-4
-                                          dark:file:bg-black/20 dark:file:text-white/70">
+                                          dark:file:bg-black/20 dark:file:text-white/70"
+                                            required>
                                     </div>
                                 </div>
 
@@ -67,7 +75,7 @@
                                           file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
                                           file:py-3 file:px-4
                                           dark:file:bg-black/20 dark:file:text-white/70"
-                                            multiple="multiple">
+                                            multiple="multiple" required>
                                     </div>
                                 </div>
 
@@ -80,7 +88,20 @@
                                             <label class="ti-form-label mb-0">Product Short Description</label>
                                         </div>
                                         <div class="box-body">
-                                            <textarea name="ShortDescription" id="short_editor" cols="" rows=""></textarea>
+
+                                            {{-- <textarea name="ShortDescription" id="short_editor" cols="40" rows="5" required></textarea> --}}
+                                            @error('ShortDescription')
+                                                <div role="alert">
+                                                    <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                                                        Danger
+                                                    </div>
+                                                    <div
+                                                        class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                                                        <p>{{ $message }}</p>
+                                                    </div>
+                                                </div>
+                                            @enderror
+                                            <textarea class="ti-form-input" name="ShortDescription" id="short_editor" cols="" rows=""></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -102,7 +123,18 @@
                                         <div class="box-body" id="description">
                                             <div>
                                                 <label class="ti-form-label mb-2">Product Description</label>
-                                                <textarea name="description" id="dis_editor" cols="" rows=""></textarea>
+                                                @error('description')
+                                                    <div role="alert">
+                                                        <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
+                                                            Danger
+                                                        </div>
+                                                        <div
+                                                            class="border border-t-0 border-red-400 rounded-b bg-red-100 px-4 py-3 text-red-700">
+                                                            <p>{{ $message }}</p>
+                                                        </div>
+                                                    </div>
+                                                @enderror
+                                                <textarea class="ti-form-input" name="description" id="dis_editor" cols="" rows=""></textarea>
                                             </div>
                                         </div>
 
@@ -124,7 +156,7 @@
                                             <div class="space-y-2 mb-5">
                                                 <label class="ti-form-label mb-1">Product Seo Title</label>
                                                 <input type="text" class="my-auto ti-form-input "
-                                                    placeholder="Product Name" name="seoTitle">
+                                                    placeholder="Product Name" name="seoTitle" required>
                                             </div>
 
                                             <div class="space-y-2 mb-5">
@@ -136,13 +168,14 @@
                                                       file:bg-transparent file:border-0
                                                       file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
                                                       file:py-3 file:px-4
-                                                      dark:file:bg-black/20 dark:file:text-white/70">
+                                                      dark:file:bg-black/20 dark:file:text-white/70"
+                                                        required>
                                                 </div>
                                             </div>
 
                                             <div class="space-y-2 mb-5">
                                                 <label class="ti-form-label mb-1">Product Seo Description</label>
-                                                <textarea class="ti-form-input" rows="3" name="seoDescription"></textarea>
+                                                <textarea class="ti-form-input" rows="3" name="seoDescription" required></textarea>
                                             </div>
 
                                         </div>
@@ -154,9 +187,9 @@
                             <div class="my-5">
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Select Category</label>
-                                    <select class="ti-form-select sm:p-4" name="category">
-                                        <option selected="">Select Category</option>
+                                    <select class="ti-form-select sm:p-4" name="category" required>
                                         @foreach ($allCategory as $item)
+                                            <option selected="{{ 0 }}">NULL</option>
                                             <option value="{{ $item->id }}">{{ $item->category_title }} </option>
                                         @endforeach
                                     </select>
@@ -169,14 +202,14 @@
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Placement in shop</label>
                                     <input type="number" name="position" class="my-auto ti-form-input"
-                                        placeholder="Placement">
+                                        placeholder="Placement" required>
                                 </div>
                             </div>
 
                             <div class="my-5">
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Product Status</label>
-                                    <select class="ti-form-select sm:p-4" name="status">
+                                    <select class="ti-form-select sm:p-4" name="status" required>
                                         <option selected="">Active</option>
                                         <option>De-active</option>
                                         <option>Pending</option>
@@ -190,16 +223,8 @@
                                     </div>
                                     <div class="box-body">
                                         <div class="flex rounded-sm shadow-sm">
-                                            <div
-                                                class="px-4 inline-flex items-center min-w-fit ltr:rounded-l-sm rtl:rounded-r-sm border ltr:border-r-0 rtl:border-l-0 border-gray-200 bg-gray-50 dark:bg-black/20 dark:border-white/10">
-                                                <span class="text-sm text-gray-500 dark:text-white/70"><i
-                                                        class="ri ri-calendar-line"></i></span>
-                                            </div>
 
-                                            <input type="text"
-                                                class="ti-form-input ltr:rounded-l-none rtl:rounded-r-none focus:z-10 flatpickr-input"
-                                                id="date" placeholder="Choose date" readonly="readonly"
-                                                name="schedule">
+                                            <input type="date" name="schedule" required>
                                         </div>
                                     </div>
                                 </div>
@@ -225,11 +250,13 @@
                                                 <div class="space-y-2  mb-3">
                                                     <label class="ti-form-label mb-0">Product Title</label>
                                                     <input type="text" name="itemTitle[]"
-                                                        class="my-auto ti-form-input" placeholder="Product Title">
+                                                        class="my-auto ti-form-input" placeholder="Product Title"
+                                                        required>
 
                                                     <label class="ti-form-label mb-0">Product Price</label>
                                                     <input type="number" name="itemPrice[]"
-                                                        class="my-auto ti-form-input" placeholder="Product Price">
+                                                        class="my-auto ti-form-input" placeholder="Product Price"
+                                                        required>
                                                 </div>
                                             </div>
                                         </div>
@@ -273,10 +300,10 @@
         <div>
             <label class="ti-form-label mt-7">Product images</label>
             <label for="file-input-medium" class="sr-only">Choose file</label>
-            <input type="file" name="ExtraFileDescription[]" id="file-input-medium" class="block mb-2 w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-3 file:px-4 dark:file:bg-black/20 dark:file:text-white/70">
+            <input type="file" name="ExtraFileDescription[]" id="file-input-medium" class="block mb-2 w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70 file:bg-transparent file:border-0 file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4 file:py-3 file:px-4 dark:file:bg-black/20 dark:file:text-white/70" required>
 
             <label class="ti-form-label mb-2">Product Description</label>
-            <textarea name="ExtraDescription[]" id="dis_editor${id}" cols="" rows=""></textarea>
+            <textarea name="ExtraDescription[]" id="dis_editor${id}" cols="" rows="" ></textarea>
 
             <button class="removeEditorBtn ti-btn bg-indigo-500 text-white hover:bg-indigo-600 focus:ring-indigo-500 dark:focus:ring-offset-white/10" data-id="${id}">Remove</button>
         </div>

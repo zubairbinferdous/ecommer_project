@@ -4,7 +4,7 @@
         <div class="col-span-12 lg:col-span-6">
             <div class="box">
                 <div class="box-header">
-                    <h5 class="box-title">All Product Area</h5>
+                    <h5 class="box-title">All Attribute value</h5>
                 </div>
                 <div class="box-body">
                     <div class="flex flex-col">
@@ -14,52 +14,21 @@
                                     <table class="ti-custom-table ti-custom-table-head">
                                         <thead class="">
                                             <tr>
-
-                                                <th scope="col">Product Name</th>
-                                                <th scope="col">Product Id</th>
-                                                <th scope="col">Transaction Id</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Variations</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">Actions</th>
+                                                <th scope="col">SL</th>
+                                                <th scope="col">Attribute name</th>
+                                                <th scope="col">Attribute value</th>
+                                                <th scope="col">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
-                                            @foreach ($product as $key => $item)
+
+
+                                            @foreach ($data as $key => $item)
                                                 <tr>
-
-                                                    <td>
-                                                        <div class="flex items-center">
-                                                            <div class="ltr:mr-2 rtl:ml-2 leading-none">
-                                                                <img src="{{ asset($item->ProductImages) }}"
-                                                                    alt="Image Description"
-                                                                    class="avatar avatar-xs rounded-sm">
-                                                            </div>
-                                                            <div class="text-sm"> {{ $item->ProductName }} </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <span class="font-semibold">{{ $item->Product_id }}</span>
-                                                    </td>
-                                                    <td><a href="invoice.html">{{ $item->Category_id }}</a></td>
-                                                    <td>
-                                                        {{ $item->Regular_price }}
-                                                    </td>
-
-
-                                                    <td>
-                                                        <a href="{{ route('variation', $item->Product_id) }}"
-                                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                            Add Variations
-                                                        </a>
-                                                    </td>
-
-                                                    <td>
-                                                        <span
-                                                            class="badge bg-success/10 leading-none text-success rounded-sm">{{ $item->ProductStatus }}</span>
-                                                    </td>
-
+                                                    <td>{{ $key + 1 }}</td>
+                                                    <td>{{ $item->attribute->attribute_name }}</td>
+                                                    <td>{{ $item->attribute_values_name }}</td>
                                                     <td class="font-medium space-x-2 rtl:space-x-reverse">
                                                         <div class="hs-tooltip ti-main-tooltip">
                                                             <a href="javascript:void(0);"
