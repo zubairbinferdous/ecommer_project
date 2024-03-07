@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->integer('product_code');
-            $table->foreignId('attribute_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('attribute_values_id')->constrained()->cascadeOnDelete();
+            $table->string('attribute_id');
+            $table->string('attribute_values_id');
             $table->integer('quantity');
             $table->integer('price');
+            $table->longText('AttributeDescription');
+            $table->string('ImgAttribute');
             $table->timestamps();
         });
     }

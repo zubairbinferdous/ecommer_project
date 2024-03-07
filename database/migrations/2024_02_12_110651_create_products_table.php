@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('ProductName');
+            $table->string('ProductType');
             $table->integer('Product_id');
-            $table->integer('Regular_price');
+            $table->integer('Regular_price')->nullable();
+            $table->integer('Sell_price')->nullable();
             $table->string('ProductUrl');
             $table->string('ProductImages');
             $table->longText('ProductShortDescription');

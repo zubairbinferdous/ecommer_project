@@ -1,7 +1,8 @@
 <style>
     .ck-editor__editable[role="textbox"] {
         /* Editing area */
-        min-height: 250px;
+        min-height: 200px;
+        min-width: 100px;
     }
 </style>
 @extends('admin.admin_index')
@@ -9,38 +10,154 @@
     <div class="main-content">
         <div class="grid grid-cols-12 gap-x-6 mt-12">
             <div class="col-span-12">
-                <div class="box">
-                    <div class="box-header">
-                        <h5 class="box-title">Add Product Area</h5>
+                <form action="{{ route('store.product') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+
+
+                    @php
+                        $productID = substr(mt_rand(10000000, 99999999), 0, 7);
+                    @endphp
+
+                    <div class="space-y-2 mt-5">
+                        <input type="hidden" class="my-auto ti-form-input" name="ProductId" placeholder="{{ $productID }}"
+                            value="{{ $productID }} " readonly>
                     </div>
-                    <div class="box-body">
-                        <form action="{{ route('store.product') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="">
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 class="box-title">Product Type</h5>
+                        </div>
+                        <div class="box-body">
+
+                            <div class="space-y-2">
+                                <label class="ti-form-label mb-0">Choose Product Type</label>
+                                <select name="ProductType" id="pvSimple" class="ti-form-select sm:p-4">
+                                    <option value="null" selected>Null</option>
+                                    <option value="Simple">Simple Product</option>
+                                    <option value="Variation">Variation Product</option>
+                                </select>
+                            </div>
+
+                            <div class="displayProduct mt-5" id="SimpleProductData">
+                                <div class="space-y-2 ">
+                                    <label class="ti-form-label mb-1">Product regular price</label>
+                                    <input type="text" class="my-auto ti-form-input " placeholder="Product Name"
+                                        name="regularPrice">
+                                </div>
+                                <div class="space-y-2 mt-5">
+                                    <label class="ti-form-label mb-1">Product sell price</label>
+                                    <input type="text" class="my-auto ti-form-input " placeholder="Product Name"
+                                        name="sellPrice">
+                                </div>
+                            </div>
+
+                            <div class="displayProduct" id="VariationProductData">
+
+                                <div class="space-y-2 mt-5">
+                                    <div class="flex justify-between">
+                                        <label class="ti-form-label mb-0">Set Product Attribute</label>
+                                        <button id="duplicateButton"
+                                            class="ti-btn bg-indigo-500 text-white hover:bg-indigo-600 focus:ring-indigo-500 dark:focus:ring-offset-white/10">+</button>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-check form-check-inline mt-3 flex">
+                                            @foreach ($attribute as $item)
+                                                <div class="Attribute-area mr-5">
+                                                    <div class="Attribute-item" id="checkAttribute_{{ $item->id }}">
+
+                                                        <label class="form-check-label" for="attribute_{{ $item->id }}">
+                                                            {{ $item->attribute_name }}
+                                                        </label>
+                                                        <input class="form-check-input attribute-checkbox" type="checkbox"
+                                                            value="{{ $item->id }}"
+                                                            name="attributeId[{{ $item->id }}][]"
+                                                            id="attribute_{{ $item->id }}"onchange="toggleDropdown('{{ $item->id }}')">
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+                                        <div class="" id="SetAttributeValue">
+                                            <div class="flex flex-wrap grid grid-cols-2 gap-4">
+                                                @foreach ($attribute as $item)
+                                                    <div class="Attribute-item-value mr-3"
+                                                        id="dropdown_{{ $item->id }}" style="display: none;">
+                                                        <label class="ti-form-label mt-3">
+                                                            {{ $item->attribute_name }}<span
+                                                                class="ml-1">VALUE</span></label>
+                                                        <select class="ti-form-select sm:p-4 attribute-dropdown"
+                                                            name="attributeValue[]" required>
+                                                            <option value="null">Null</option>
+                                                            @foreach ($item->attributeValue as $itemValue)
+                                                                <option value="{{ $itemValue->id }}">
+                                                                    {{ $itemValue->attribute_values_name }} </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            <div id="Attribute-item-value">
+
+                                                <div class="flex mt-2 grid grid-cols-2 gap-4">
+                                                    <div class="mr-4 mt-2">
+                                                        <label class="ti-form-label mb-0">Product Price </label>
+                                                        <input type="number" class="my-auto ti-form-input mt-1"
+                                                            placeholder="Product Price" name="productPrice[]" required>
+                                                    </div>
+
+                                                    <div class="mr-3 mt-2">
+                                                        <label class="ti-form-label mb-0">Product quantity</label>
+                                                        <input type="number" class="my-auto ti-form-input mt-1"
+                                                            placeholder="Product Quantity" name="productQuantity[]"
+                                                            required>
+                                                    </div>
+
+                                                    <div class="mr-3 mt-2">
+                                                        <label class="ti-form-label mb-0">Product Description</label>
+                                                        <textarea class="ti-form-input" name="AttributeDescription[]" id="" cols="5" rows="5"></textarea>
+                                                    </div>
+                                                    <div class="mr-3 mt-2">
+                                                        <label class="ti-form-label mb-0">Product Img Upload</label>
+                                                        <input type="file" name="ImgAttribute[]" id="file-input-medium"
+                                                            class="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70
+                                                  file:bg-transparent file:border-0
+                                                  file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
+                                                  file:py-3 file:px-4
+                                                  dark:file:bg-black/20 dark:file:text-white/70">
+                                                    </div>
+                                                    <div id="duplicatedDelete" class="mt-5"></div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="box">
+                        <div class="box-header">
+                            <h5 class="box-title">Add Product Area</h5>
+                        </div>
+
+                        <div class="box-body">
+
+                            {{-- <div class="">
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Product Name</label>
                                     <input type="text" class="my-auto ti-form-input" placeholder="Product Name"
                                         name="productName" required>
                                 </div>
-
-                                @php
-                                    $productID = substr(mt_rand(10000000, 99999999), 0, 7);
-                                @endphp
-                                <div class="space-y-2 mt-5">
-                                    <input type="hidden" class="my-auto ti-form-input" name="ProductId"
-                                        placeholder="{{ $productID }}" value="{{ $productID }} " readonly>
-                                </div>
+                            </div> --}}
 
 
-                                <div class="space-y-2">
-                                    <label class="ti-form-label mb-0">Product Regular Price</label>
-                                    <input type="number" class="my-auto ti-form-input" placeholder="Product Price"
-                                        name="RegularPrice" required>
-                                </div>
-
-                            </div>
-
-                            <div class="my-5">
+                            {{-- <div class="my-5">
 
                                 <div class="box">
                                     <div class="box-header">
@@ -57,11 +174,8 @@
                                             required>
                                     </div>
                                 </div>
-
-
-
-                            </div>
-                            <div class="my-5">
+                            </div> --}}
+                            {{-- <div class="my-5">
 
                                 <div class="box">
                                     <div class="box-header">
@@ -79,9 +193,9 @@
                                     </div>
                                 </div>
 
-                            </div>
+                            </div> --}}
 
-                            <div class="grid grid-cols-12 gap-6">
+                            {{-- <div class="grid grid-cols-12 gap-6">
                                 <div class="col-span-12">
                                     <div class="box">
                                         <div class="box-header">
@@ -89,7 +203,7 @@
                                         </div>
                                         <div class="box-body">
 
-                                            {{-- <textarea name="ShortDescription" id="short_editor" cols="40" rows="5" required></textarea> --}}
+                              
                                             @error('ShortDescription')
                                                 <div role="alert">
                                                     <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
@@ -105,8 +219,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="grid grid-cols-12 gap-6">
+                            </div> --}}
+
+                            {{-- <div class="grid grid-cols-12 gap-6">
                                 <div class="col-span-12">
                                     <div class="box">
                                         <div class="box-header flex justify-between">
@@ -141,11 +256,11 @@
                                         <div class=""></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
 
-                            <div class="grid grid-cols-12 gap-6">
+                            {{-- <div class="grid grid-cols-12 gap-6">
                                 <div class="col-span-12">
                                     <div class="box">
                                         <div class="box-header">
@@ -181,10 +296,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
-                            <div class="my-5">
+                            {{-- <div class="my-5">
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Select Category</label>
                                     <select class="ti-form-select sm:p-4" name="category" required>
@@ -194,19 +309,19 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
 
-                            <div class="my-5">
+                            {{-- <div class="my-5">
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Placement in shop</label>
                                     <input type="number" name="position" class="my-auto ti-form-input"
                                         placeholder="Placement" required>
                                 </div>
-                            </div>
+                            </div> --}}
 
-                            <div class="my-5">
+                            {{-- <div class="my-5">
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Product Status</label>
                                     <select class="ti-form-select sm:p-4" name="status" required>
@@ -215,8 +330,8 @@
                                         <option>Pending</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="my-5">
+                            </div> --}}
+                            {{-- <div class="my-5">
                                 <div class="box">
                                     <div class="box-header">
                                         <label class="ti-form-label mb-0">Product Schedule </label>
@@ -228,10 +343,10 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
-                            <div class="grid grid-cols-12 gap-6">
+                            {{-- <div class="grid grid-cols-12 gap-6">
                                 <div class="col-span-12">
                                     <div class="box">
                                         <div class="box-header flex justify-between">
@@ -262,17 +377,17 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
 
 
                             <button type="submit" class="ti-btn ti-btn-primary">Submit Product</button>
-                        </form>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
+    </div>
+    </div>
     </div>
 @endsection
 
@@ -285,6 +400,11 @@
             });
         ClassicEditor
             .create(document.querySelector('#dis_editor'))
+            .catch(error => {
+                console.error(error);
+            });
+        ClassicEditor
+            .create(document.querySelector('#act_editor'))
             .catch(error => {
                 console.error(error);
             });
@@ -363,4 +483,25 @@
             });
         });
     </script>
+
+    {{-- <script>
+        function toggleDropdown(attributeId) {
+            var checkbox = document.getElementById('attribute_' + attributeId);
+            var dropdown = document.getElementById('dropdown_' + attributeId);
+
+            if (checkbox.checked) {
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        // Initially hide all dropdowns
+        window.onload = function() {
+            var attributes = document.querySelectorAll('.Attribute-item-value');
+            attributes.forEach(function(attribute) {
+                attribute.style.display = 'none';
+            });
+        };
+    </script> --}}
 @endsection

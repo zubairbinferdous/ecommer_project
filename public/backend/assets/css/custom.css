@@ -1,0 +1,12 @@
+.displayProduct {
+    display: none !important;
+    overflow: hidden !important;
+    visibility: hidden !important;
+}
+
+.button_remove_item {
+    padding: 8px 18px;
+    background-color: tomato;
+    color: white;
+    border-radius: 4px;
+}

@@ -28,6 +28,7 @@
 
     <!-- Style Css -->
     <link rel="stylesheet" href="{{ asset('backend/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('backend/assets/css/custom.css') }}">
 
     <!-- Simplebar Css -->
     <link rel="stylesheet" href="{{ asset('backend/assets/libs/simplebar/simplebar.min.css') }}">
@@ -76,7 +77,9 @@
     <!-- Color Picker Css -->
     <link rel="stylesheet" href="../assets/libs/@simonwep/pickr/themes/nano.min.css">
 
+    {{-- custom css  --}}
 
+    <link rel="stylesheet" href="{{ asset('') }}">
 
 
 
@@ -997,8 +1000,10 @@
     <!-- Quill Editor JS -->
     <script src="{{ asset('backend/assets/libs/quill/quill.min.js') }}"></script>
     <script src="{{ asset('backend/assets/js/quill.js') }}"></script>
+    <script src="{{ asset('backend/assets/js/customProduct.js') }}"></script>
 
     @yield('script')
+
 
 
 
