@@ -371,3 +371,4 @@ function openFullscreen() {
     open.classList.add("block");
   }
 }
+

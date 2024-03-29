@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Redirect;
 class productController extends Controller
 {
 
+
+
     //add product
     function addProduct()
     {
@@ -44,53 +46,50 @@ class productController extends Controller
     function productStore(Request $request)
     {
 
-        dd($request->all());
-        // $validator = Validator::make($request->all(), [
-        //     'ShortDescription' => 'required|string|',
-        //     'description' => 'required|string|',
-        // ]);
+        // dd($request->all());
+        $validator = Validator::make($request->all(), [
+            'ShortDescription' => 'required|string|',
+            'description' => 'required|string|',
+        ]);
 
-        // if ($validator->fails()) {
-        //     return redirect()->back()->withErrors($validator)->withInput();
-        // }
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
-        // if ($request->file('fileImg')) {
+        if ($request->file('fileImg')) {
 
-        //     $img = $request->file('fileImg');
-        //     $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
+            $img = $request->file('fileImg');
+            $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
 
-        //     $saveImg = 'upload/product/' . $name_gen;
-        //     $img->move(public_path('upload/product/'), $name_gen);
+            $saveImg = 'upload/product/' . $name_gen;
+            $img->move(public_path('upload/product/'), $name_gen);
 
-        //     $simg = $request->file('fileSeo');
-        //     $sEOname_gen = hexdec(uniqid()) . '.' . $simg->getClientOriginalExtension();
+            $simg = $request->file('fileSeo');
+            $sEOname_gen = hexdec(uniqid()) . '.' . $simg->getClientOriginalExtension();
 
-        //     $saveSeoImg = 'upload/seo/' . $sEOname_gen;
-        //     $simg->move(public_path('upload/seo/'), $sEOname_gen);
+            $saveSeoImg = 'upload/seo/' . $sEOname_gen;
+            $simg->move(public_path('upload/seo/'), $sEOname_gen);
 
-        //     Product::insert([
-        //         'ProductName' => $request->productName,
-        //         'Regular_price' => $request->RegularPrice,
-        //         'Sell_price' => $request->sellPrice,
-        //         'ProductType' => $request->ProductType,
-        //         'product_id' => $request->ProductId,
-        //         'ProductUrl' => strtolower(str_replace(' ', '-', $request->productName)),
-        //         'ProductImages' => $saveImg,
-        //         'ProductShortDescription' => $request->ShortDescription,
-        //         'SeoTitle' => $request->seoTitle,
-        //         'SeoImages' => $saveSeoImg,
-        //         'SeoDescription' => $request->seoDescription,
-        //         'description' => $request->description,
-        //         'Category_id' => $request->category,
-        //         'PlacementInShop' => $request->position,
-        //         'ProductStatus' => $request->status,
-        //         'ProductSchedule' => $request->schedule,
+            Product::insert([
+                'ProductName' => $request->productName,
+                'Regular_price' => $request->RegularPrice,
+                'Sell_price' => $request->sellPrice,
+                'ProductType' => $request->ProductType,
+                'product_id' => $request->ProductId,
+                'ProductUrl' => strtolower(str_replace(' ', '-', $request->productName)),
+                'ProductImages' => $saveImg,
+                'ProductShortDescription' => $request->ShortDescription,
+                'SeoTitle' => strtolower(str_replace(' ', '-', $request->productName)),
+                'SeoImages' => $saveImg,
+                'SeoDescription' => $request->ShortDescription,
+                'description' => $request->description,
+                'Category_id' => $request->category,
+                'PlacementInShop' => $request->position,
+                'ProductStatus' => $request->status,
+                'ProductSchedule' => $request->schedule,
 
-        //     ]);
-        // }
-
-
-
+            ]);
+        }
 
 
         if ($request->input('attributeId')) {
@@ -101,6 +100,7 @@ class productController extends Controller
             $attributeDataValue = [
                 $request->input('attributeValue'),
             ];
+
 
             foreach ($request->productPrice as $key => $price) {
 
@@ -124,112 +124,129 @@ class productController extends Controller
         }
 
 
-        // if ($request->input('productPrice')) {
+        if ($request->input('attributeId')) {
 
-        //     if ($request->input('productPrice')) {
-        //         $ProductId = $request->input('ProductId');
-        //         $attributeIds = $request->input('attributeId');
-        //         $attributeValues = $request->input('attributeValue');
-        //         $productPrices = $request->input('productPrice');
-        //         $productQuantities = $request->input('productQuantity');
-        //         $productDescriptions = $request->input('AttributeDescription');
-        //         $productImages = $request->file('ImgAttribute');
+            $attributeData = $request->input('attributeId');
+            $attributeDataValue =  $request->input('attributeValue');
+            $j = 0;
+            $attribute_lenght = count($attributeDataValue);
+            $att_arr = [];
 
-        //         $serializedAttributesID = serialize(['attributeId' => $attributeIds]);
+            foreach ($request->productPrice as $key => $price) {
 
-        //         foreach ($productPrices as $key => $price) {
-        //             // Initialize $imagePath variable
-        //             $imagePath = null;
+                if ($request->hasFile('ImgAttribute')) {
+                    $img = $request->file('ImgAttribute')[$key];
+                    $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
+                    $saveImg = 'upload/product/' . $name_gen;
+                    $img->move(public_path('upload/product/'), $name_gen);
+                }
+                for ($i = 1; $i <= $attribute_lenght; $i++) {
 
-        //             // Handle file upload
-        //             if ($productImages[$key]) {
-        //                 $imageName = time() . '_' . $productImages[$key]->getClientOriginalName();
-        //                 $productImages[$key]->move(public_path('images'), $imageName);
-        //                 // Store the path to the image in the database
-        //                 $imagePath = '/images/' . $imageName;
-        //             }
+                    array_push($att_arr, $attributeDataValue[$i][$j]);
+                }
 
-        //             // Serialize attribute values for this variation
-        //             $serializedAttributesValue = serialize($attributeValues[$key]);
+                Variation::create([
+                    'product_code' => $request->ProductId,
+                    'attribute_id' => json_encode($attributeData),
+                    'attribute_values_id' => json_encode($att_arr),
+                    'price' => $price,
+                    'quantity' => $request->productQuantity[$key],
+                    'AttributeDescription' => $request->AttributeDescription[$key],
+                    'ImgAttribute' => isset($saveImg) ? $saveImg : null,
+                ]);
+                $j++;
+                $att_arr = [];
+            }
+        }
 
-        //             // Create a new variation
-        //             Variation::create([
-        //                 'product_code' => $ProductId,
-        //                 'attribute_id' => $serializedAttributesID,
-        //                 'attribute_values_id' => $serializedAttributesValue,
-        //                 'price' => $price,
-        //                 'quantity' => $productQuantities[$key],
-        //                 'AttributeDescription' => $productDescriptions[$key],
-        //                 'ImgAttribute' => $imagePath,
-        //             ]);
+        // if ($request->input('attributeId')) {
+        //     $attributeData = $request->input('attributeId');
+        //     $attributeDataValue = $request->input('attributeValue');
+
+        //     $attributeLength = count($attributeDataValue);
+
+        //     foreach ($request->productPrice as $key => $price) {
+        //         if ($request->hasFile('ImgAttribute')) {
+        //             $img = $request->file('ImgAttribute')[$key];
+        //             $saveImg = 'upload/product/' . uniqid() . '.' . $img->getClientOriginalExtension();
+        //             $img->move(public_path('upload/product/'), $saveImg);
         //         }
-        //     }
-        // }
 
+        //         $att_arr = [];
+        //         for ($i = 1; $i < $attributeLength; $i++) {
+        //             $att_arr[] = $attributeDataValue[$i][$key];
+        //         }
 
-
-
-
-
-
-        // if ($request->file('ExtraFileDescription')) {
-        //     $extraFileDescriptions = $request->file('ExtraFileDescription');
-        //     $extraDescriptions = $request->input('ExtraDescription');
-        //     $productId = $request->input('ProductId');
-        //     foreach ($extraFileDescriptions as $key => $extraFileDescription) {
-
-        //         $name_gen = hexdec(uniqid()) . '.' . $extraFileDescription->getClientOriginalExtension();
-        //         $saveImg = 'upload/product/' . $name_gen;
-        //         $extraFileDescription->move(public_path('upload/product/'), $name_gen);
-        //         description::create([
-        //             'product_id' => $productId,
-        //             'product_images' => $saveImg,
-        //             'descriptions' => $extraDescriptions[$key],
-        //         ]);
-        //     }
-        // }
-
-
-
-        // if ($request->hasFile('fileMulti')) {
-        //     $itemId = $request->input('ProductId');
-        //     foreach ($request->file('fileMulti') as $image) {
-        //         $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-        //         $saveImg = 'upload/product/' . $name_gen;
-        //         $image->move(public_path('upload/product/'), $name_gen);
-
-        //         ProductMultiImg::create([
-        //             'product_id' => $itemId,
-        //             'product_multi_img' => $saveImg,
-        //         ]);
-        //     }
-        // }
-
-
-
-
-        // if ($request->input('itemTitle')) {
-
-
-        //     $itemId = $request->input('ProductId');
-        //     $titles = (array)$request->input('itemTitle');
-        //     $prices = (array)$request->input('itemPrice');
-
-        //     $count = count($titles);
-
-        //     for ($i = 0; $i < $count; $i++) {
-        //         $title = $titles[$i];
-        //         $price = $prices[$i];
-
-        //         ProductItem::create([
-        //             'product_id' => $itemId,
-        //             'Product_title' => $title,
+        //         Variation::create([
+        //             'product_code' => $request->ProductId,
+        //             'attribute_id' => json_encode($attributeData),
+        //             'attribute_values_id' => json_encode($att_arr),
         //             'price' => $price,
+        //             'quantity' => $request->productQuantity[$key],
+        //             'AttributeDescription' => $request->AttributeDescription[$key] ?? null,
+        //             'ImgAttribute' => isset($saveImg) ? $saveImg : null,
         //         ]);
         //     }
-        // } else {
-        //     'error';
         // }
+
+        if ($request->file('ExtraFileDescription')) {
+            $extraFileDescriptions = $request->file('ExtraFileDescription');
+            $extraDescriptions = $request->input('ExtraDescription');
+            $productId = $request->input('ProductId');
+            foreach ($extraFileDescriptions as $key => $extraFileDescription) {
+
+                $name_gen = hexdec(uniqid()) . '.' . $extraFileDescription->getClientOriginalExtension();
+                $saveImg = 'upload/product/' . $name_gen;
+                $extraFileDescription->move(public_path('upload/product/'), $name_gen);
+                description::create([
+                    'product_id' => $productId,
+                    'product_images' => $saveImg,
+                    'descriptions' => $extraDescriptions[$key],
+                ]);
+            }
+        }
+
+
+
+        if ($request->hasFile('fileMulti')) {
+            $itemId = $request->input('ProductId');
+            foreach ($request->file('fileMulti') as $image) {
+                $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+                $saveImg = 'upload/product/' . $name_gen;
+                $image->move(public_path('upload/product/'), $name_gen);
+
+                ProductMultiImg::create([
+                    'product_id' => $itemId,
+                    'product_multi_img' => $saveImg,
+                ]);
+            }
+        }
+
+
+
+
+        if ($request->input('itemTitle')) {
+
+
+            $itemId = $request->input('ProductId');
+            $titles = (array)$request->input('itemTitle');
+            $prices = (array)$request->input('itemPrice');
+
+            $count = count($titles);
+
+            for ($i = 0; $i < $count; $i++) {
+                $title = $titles[$i];
+                $price = $prices[$i];
+
+                ProductItem::create([
+                    'product_id' => $itemId,
+                    'Product_title' => $title,
+                    'price' => $price,
+                ]);
+            }
+        } else {
+            'error';
+        }
 
 
 
