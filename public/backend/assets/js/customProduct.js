@@ -32,7 +32,6 @@ function disableOption(event) {
             var options = select.options;
             for (var i = 0; i < options.length; i++) {
                 if (options[i].value === selectedValue) {
-                    options[i].disabled = true;
                     options[i].classList.add("selected-option");
                 }
             }
@@ -121,7 +120,6 @@ document
                     const option = newSetAttributeValue.querySelector(
                         'option[value="' + options[i].value + '"]'
                     );
-                    option.disabled = true;
                     option.classList.add("selected-option");
                 }
             }

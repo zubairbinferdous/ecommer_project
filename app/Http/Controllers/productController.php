@@ -64,11 +64,11 @@ class productController extends Controller
             $saveImg = 'upload/product/' . $name_gen;
             $img->move(public_path('upload/product/'), $name_gen);
 
-            $simg = $request->file('fileSeo');
-            $sEOname_gen = hexdec(uniqid()) . '.' . $simg->getClientOriginalExtension();
+            // $simg = $request->file('fileSeo');
+            // $sEOname_gen = hexdec(uniqid()) . '.' . $simg->getClientOriginalExtension();
 
-            $saveSeoImg = 'upload/seo/' . $sEOname_gen;
-            $simg->move(public_path('upload/seo/'), $sEOname_gen);
+            // $saveSeoImg = 'upload/seo/' . $sEOname_gen;
+            // $simg->move(public_path('upload/seo/'), $sEOname_gen);
 
             Product::insert([
                 'ProductName' => $request->productName,
@@ -92,36 +92,36 @@ class productController extends Controller
         }
 
 
-        if ($request->input('attributeId')) {
+        // if ($request->input('attributeId')) {
 
-            $attributeData = [
-                $request->input('attributeId'),
-            ];
-            $attributeDataValue = [
-                $request->input('attributeValue'),
-            ];
+        //     $attributeData = [
+        //         $request->input('attributeId'),
+        //     ];
+        //     $attributeDataValue = [
+        //         $request->input('attributeValue'),
+        //     ];
 
 
-            foreach ($request->productPrice as $key => $price) {
+        //     foreach ($request->productPrice as $key => $price) {
 
-                if ($request->hasFile('ImgAttribute')) {
-                    $img = $request->file('ImgAttribute')[$key];
-                    $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-                    $saveImg = 'upload/product/' . $name_gen;
-                    $img->move(public_path('upload/product/'), $name_gen);
-                }
+        //         if ($request->hasFile('ImgAttribute')) {
+        //             $img = $request->file('ImgAttribute')[$key];
+        //             $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
+        //             $saveImg4 = 'upload/product/' . $name_gen;
+        //             $img->move(public_path('upload/product/'), $name_gen);
+        //         }
 
-                Variation::create([
-                    'product_code' => $request->ProductId,
-                    'attribute_id' => json_encode($attributeData),
-                    'attribute_values_id' => json_encode($attributeDataValue),
-                    'price' => $price,
-                    'quantity' => $request->productQuantity[$key],
-                    'AttributeDescription' => $request->AttributeDescription[$key],
-                    'ImgAttribute' => isset($saveImg) ? $saveImg : null,
-                ]);
-            }
-        }
+        //         Variation::create([
+        //             'product_code' => $request->ProductId,
+        //             'attribute_id' => json_encode($attributeData),
+        //             'attribute_values_id' => json_encode($attributeDataValue),
+        //             'price' => $price,
+        //             'quantity' => $request->productQuantity[$key],
+        //             'AttributeDescription' => $request->AttributeDescription[$key],
+        //             'ImgAttribute' => isset($saveImg4)
+        //         ]);
+        //     }
+        // }
 
 
         if ($request->input('attributeId')) {
@@ -137,7 +137,7 @@ class productController extends Controller
                 if ($request->hasFile('ImgAttribute')) {
                     $img = $request->file('ImgAttribute')[$key];
                     $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-                    $saveImg = 'upload/product/' . $name_gen;
+                    $saveImg44 = 'upload/product/' . $name_gen;
                     $img->move(public_path('upload/product/'), $name_gen);
                 }
                 for ($i = 1; $i <= $attribute_lenght; $i++) {
@@ -152,7 +152,7 @@ class productController extends Controller
                     'price' => $price,
                     'quantity' => $request->productQuantity[$key],
                     'AttributeDescription' => $request->AttributeDescription[$key],
-                    'ImgAttribute' => isset($saveImg) ? $saveImg : null,
+                    'ImgAttribute' => isset($saveImg44),
                 ]);
                 $j++;
                 $att_arr = [];

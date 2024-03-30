@@ -72,8 +72,7 @@
                                                             {{ $item->attribute_name }}
                                                         </label>
                                                         <input class="form-check-input attribute-checkbox" type="checkbox"
-                                                            value="{{ $item->id }}"
-                                                            name="attributeId[{{ $item->id }}][]"
+                                                            value="{{ $item->id }}" name="attributeId[]"
                                                             id="attribute_{{ $item->id }}"onchange="toggleDropdown('{{ $item->id }}')">
                                                     </div>
                                                 </div>
@@ -83,8 +82,8 @@
                                         <div class="" id="SetAttributeValue">
                                             <div class="flex flex-wrap grid grid-cols-2 gap-4">
                                                 @foreach ($attribute as $item)
-                                                    <div class="Attribute-item-value mr-3"
-                                                        id="dropdown_{{ $item->id }}" style="display: none;">
+                                                    <div class="Attribute-item-value mr-3" id="dropdown_{{ $item->id }}"
+                                                        style="display: none;">
                                                         <label class="ti-form-label mt-3">{{ $item->attribute_name }}<span
                                                                 class="ml-1">VALUE</span></label>
                                                         <select class="ti-form-select sm:p-4 attribute-dropdown"
@@ -93,12 +92,12 @@
                                                             <option value="null">Null</option>
                                                             @foreach ($item->attributeValue as $itemValue)
                                                                 <option value="{{ $itemValue->attribute_values_name }}">
-                                                                    {{ $itemValue->attribute_values_name }}
-                                                                </option>
+                                                                    {{ $itemValue->attribute_values_name }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
                                                 @endforeach
+
                                             </div>
 
                                             <div id="Attribute-item-value">
@@ -266,7 +265,7 @@
                             </div>
 
 
-
+                            {{-- 
                             <div class="grid grid-cols-12 gap-6">
                                 <div class="col-span-12">
                                     <div class="box">
@@ -303,7 +302,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
 
                             <div class="my-5">
