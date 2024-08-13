@@ -8,54 +8,124 @@
     .selected-option {
         background-color: lightblue;
     }
+
+    .hiddin_element {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: -1;
+        border: 5px solid red;
+    }
+
+    .preview-image {
+        max-width: 50px;
+        max-height: 50px;
+        border-radius: 50%;
+        margin-top: 10px;
+        background-color: yellow;
+        margin-right: 10px;
+    }
+
+    #imagePreview {
+        display: flex;
+        width: 300px;
+    }
+
+    .remove-btn {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        color: aliceblue;
+        background-color: rgb(32, 32, 32);
+    }
+
+    .fileInput {
+        cursor: pointer;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 99;
+        /*This makes the button huge. If you want a bigger button, increase the font size*/
+        font-size: 50px;
+        /*Opacity settings for all browsers*/
+        opacity: 0;
+        -moz-opacity: 0;
+        filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0)
+    }
+
+    .fileName {
+        width: 98px;
+    }
+
+    .fileName1 {
+        width: 105px;
+    }
+
+    input[type="file"] {
+        display: none;
+    }
+
+    .custom-file-upload {
+        border: 1px solid #ccc;
+        display: inline-block;
+        padding: 6px 12px;
+        cursor: pointer;
+        background-color: black;
+        color: aliceblue;
+        border-radius: 8px;
+    }
 </style>
 @extends('admin.admin_index')
 @section('dashborad_header')
-    <div class="main-content">
-        <div class="grid grid-cols-12 gap-x-6 mt-12">
-            <div class="col-span-12">
-                <form action="{{ route('store.product') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
+    <div class="main-content mt-8">
+        <form action="{{ route('store.product') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            {{-- file upload  --}}
+            <div class="hiddin_element">
+                <div action="/file-upload" class="dropzone" class=""></div>
+            </div>
+            <div id="valueShow"></div>
 
 
-                    @php
-                        $productID = substr(mt_rand(10000000, 99999999), 0, 7);
-                    @endphp
+            <div class="grid grid-cols-12 gap-x-6">
 
-                    <div class="space-y-2 mt-5">
-                        <input type="hidden" class="my-auto ti-form-input" name="ProductId" placeholder="{{ $productID }}"
-                            value="{{ $productID }} " readonly>
-                    </div>
+                <div class="col-span-8 lg:col-span-8">
                     <div class="box">
                         <div class="box-header">
-                            <h5 class="box-title">Product Type</h5>
+                            <h5 class="box-title">Add Product Area</h5>
                         </div>
-                        <div class="box-body">
+                        @php
+                            $productID = substr(mt_rand(10000000, 99999999), 0, 7);
+                        @endphp
 
+                        <div class="space-y-2 mt-5">
+                            <input type="hidden" class="my-auto ti-form-input" name="ProductId"
+                                placeholder="{{ $productID }}" value="{{ $productID }} " readonly>
+                        </div>
+
+                        <div class="box-body">
                             <div class="space-y-2">
                                 <label class="ti-form-label mb-0">Choose Product Type</label>
                                 <select name="ProductType" id="pvSimple" class="ti-form-select sm:p-4">
-                                    <option value="null" selected>Null</option>
                                     <option value="Simple">Simple Product</option>
                                     <option value="Variation">Variation Product</option>
                                 </select>
-                            </div>
 
-                            <div class="displayProduct mt-5" id="SimpleProductData">
+                            </div>
+                            <div class=" mt-5" id="SimpleProductData">
                                 <div class="space-y-2 ">
                                     <label class="ti-form-label mb-1">Product regular price</label>
-                                    <input type="text" class="my-auto ti-form-input " placeholder="Product Name"
+                                    <input type="text" class="my-auto ti-form-input " placeholder="Product regular Price"
                                         name="regularPrice">
                                 </div>
                                 <div class="space-y-2 mt-5">
                                     <label class="ti-form-label mb-1">Product sell price</label>
-                                    <input type="text" class="my-auto ti-form-input " placeholder="Product Name"
+                                    <input type="text" class="my-auto ti-form-input " placeholder="Product sell Price"
                                         name="sellPrice">
                                 </div>
                             </div>
 
                             <div class="displayProduct" id="VariationProductData">
-
                                 <div class="space-y-2 mt-5">
                                     <div class="flex justify-between">
                                         <label class="ti-form-label mb-0">Set Product Attribute</label>
@@ -86,9 +156,9 @@
                                                         style="display: none;">
                                                         <label class="ti-form-label mt-3">{{ $item->attribute_name }}<span
                                                                 class="ml-1">VALUE</span></label>
-                                                        <select class="ti-form-select sm:p-4 attribute-dropdown"
-                                                            name="attributeValue[{{ $item->id }}][]" required
-                                                            onchange="disableOption(event)">
+                                                        <select
+                                                            class="ti-form-select sm:p-4 attribute-dropdown"name="attributeValue[{{ $item->id }}][]"
+                                                            required onchange="disableOption(event)" id="attributeValue">
                                                             <option value="null">Null</option>
                                                             @foreach ($item->attributeValue as $itemValue)
                                                                 <option value="{{ $itemValue->attribute_values_name }}">
@@ -97,23 +167,18 @@
                                                         </select>
                                                     </div>
                                                 @endforeach
-
                                             </div>
-
                                             <div id="Attribute-item-value">
-
                                                 <div class="flex mt-2 grid grid-cols-2 gap-4">
                                                     <div class="mr-4 mt-2">
                                                         <label class="ti-form-label mb-0">Product Price </label>
                                                         <input type="number" class="my-auto ti-form-input mt-1"
-                                                            placeholder="Product Price" name="productPrice[]" required>
+                                                            placeholder="Product Price" name="productPrice[]">
                                                     </div>
-
                                                     <div class="mr-3 mt-2">
                                                         <label class="ti-form-label mb-0">Product quantity</label>
                                                         <input type="number" class="my-auto ti-form-input mt-1"
-                                                            placeholder="Product Quantity" name="productQuantity[]"
-                                                            required>
+                                                            placeholder="Product Quantity" name="productQuantity[]">
                                                     </div>
 
                                                     <div class="mr-3 mt-2">
@@ -124,92 +189,42 @@
                                                         <label class="ti-form-label mb-0">Product Img Upload</label>
                                                         <input type="file" name="ImgAttribute[]" id="file-input-medium"
                                                             class="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70
-                                                  file:bg-transparent file:border-0
-                                                  file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
-                                                  file:py-3 file:px-4
-                                                  dark:file:bg-black/20 dark:file:text-white/70">
+                                                      file:bg-transparent file:border-0
+                                                      file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
+                                                      file:py-3 file:px-4
+                                                      dark:file:bg-black/20 dark:file:text-white/70">
                                                     </div>
                                                     <div id="duplicatedDelete" class="mt-5"></div>
                                                 </div>
-
                                             </div>
-
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
 
-                    </div>
-
-                    <div class="box">
-                        <div class="box-header">
-                            <h5 class="box-title">Add Product Area</h5>
-                        </div>
 
                         <div class="box-body">
-
                             <div class="">
                                 <div class="space-y-2">
                                     <label class="ti-form-label mb-0">Product Name</label>
                                     <input type="text" class="my-auto ti-form-input" placeholder="Product Name"
-                                        name="productName" required>
+                                        name="productName" required id="ProductNameId">
                                 </div>
                             </div>
-
-
                             <div class="my-5">
-
-                                <div class="box">
-                                    <div class="box-header">
-                                        <label class="ti-form-label mb-0">Product Image</label>
-                                    </div>
-                                    <div>
-                                        <label for="file-input-medium" class="sr-only">Choose file</label>
-                                        <input type="file" name="fileImg" id="file-input-medium"
-                                            class="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70
-                                          file:bg-transparent file:border-0
-                                          file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
-                                          file:py-3 file:px-4
-                                          dark:file:bg-black/20 dark:file:text-white/70"
-                                            required>
-                                    </div>
-                                </div>
                             </div>
 
-                            <div class="my-5">
-
-                                <div class="box">
-                                    <div class="box-header">
-                                        <label class="ti-form-label mb-0">Product Gallery</label>
-                                    </div>
-                                    <div>
-                                        <label for="file-input-medium" class="sr-only">Choose file</label>
-                                        <input type="file" name="fileMulti[]" id="file-input-medium"
-                                            class="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70
-                                          file:bg-transparent file:border-0
-                                          file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
-                                          file:py-3 file:px-4
-                                          dark:file:bg-black/20 dark:file:text-white/70"
-                                            multiple="multiple" required>
-                                    </div>
-                                </div>
-
+                            <div class="col-span-12 lg:col-span-4">
                             </div>
 
-                            <div class="grid grid-cols-12 gap-6">
-                                <div class="col-span-12">
+                            <div class="">
+                                <div class="">
                                     <div class="box">
                                         <div class="box-header">
                                             <label class="ti-form-label mb-0">Product Short Description</label>
                                         </div>
                                         <div class="box-body">
-
-
                                             @error('ShortDescription')
                                                 <div role="alert">
                                                     <div class="bg-red-500 text-white font-bold rounded-t px-4 py-2">
@@ -221,7 +236,10 @@
                                                     </div>
                                                 </div>
                                             @enderror
-                                            <textarea class="ti-form-input" name="ShortDescription" id="short_editor" cols="" rows=""></textarea>
+
+                                            <textarea id="short_editord" class="ti-form-input" rows="9" name="ShortDescription" required></textarea>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -264,8 +282,6 @@
                                 </div>
                             </div>
 
-
-                            {{-- 
                             <div class="grid grid-cols-12 gap-6">
                                 <div class="col-span-12">
                                     <div class="box">
@@ -276,81 +292,33 @@
 
                                             <div class="space-y-2 mb-5">
                                                 <label class="ti-form-label mb-1">Product Seo Title</label>
-                                                <input type="text" class="my-auto ti-form-input "
-                                                    placeholder="Product Name" name="seoTitle" required>
+                                                <input type="text" class="my-auto ti-form-input " placeholder=""
+                                                    name="seoTitle" id="seoTitleId" required>
+                                            </div>
+
+
+                                            <div class="space-y-2 mb-5">
+                                                <label class="ti-form-label mb-1">Product Seo Description</label>
+                                                <textarea class="ti-form-input" rows="9" name="seoDescription" required id="seoDescription"></textarea>
                                             </div>
 
                                             <div class="space-y-2 mb-5">
                                                 <label class="ti-form-label mb-1">Product Seo Image</label>
                                                 <div>
-                                                    <label for="file-input-medium" class="sr-only">Choose file</label>
-                                                    <input type="file" name="fileSeo" id="file-input-medium"
-                                                        class="block w-full border border-gray-200 focus:shadow-sm dark:focus:shadow-white/10 rounded-sm text-sm focus:z-10 focus:outline-0 focus:border-gray-200 dark:focus:border-white/10 dark:border-white/10 dark:text-white/70
-                                                      file:bg-transparent file:border-0
-                                                      file:bg-gray-100 ltr:file:mr-4 rtl:file:ml-4
-                                                      file:py-3 file:px-4
-                                                      dark:file:bg-black/20 dark:file:text-white/70"
-                                                        required>
+
+                                                    <label for="fileSeo" class="custom-file-upload">
+                                                        Upload Seo Image
+                                                    </label>
+                                                    <input type="file" name="fileSeo" id="fileSeo"
+                                                        class="fileName" />
+                                                    <div id="imagePreviewSeo" class="preview-container"></div>
                                                 </div>
                                             </div>
 
-                                            <div class="space-y-2 mb-5">
-                                                <label class="ti-form-label mb-1">Product Seo Description</label>
-                                                <textarea class="ti-form-input" rows="3" name="seoDescription" required></textarea>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
-
-
-                            <div class="my-5">
-                                <div class="space-y-2">
-                                    <label class="ti-form-label mb-0">Select Category</label>
-                                    <select class="ti-form-select sm:p-4" name="category" required>
-                                        @foreach ($allCategory as $item)
-                                            <option selected="{{ 0 }}">NULL</option>
-                                            <option value="{{ $item->id }}">{{ $item->category_title }} </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-
-
-                            <div class="my-5">
-                                <div class="space-y-2">
-                                    <label class="ti-form-label mb-0">Placement in shop</label>
-                                    <input type="number" name="position" class="my-auto ti-form-input"
-                                        placeholder="Placement" required>
-                                </div>
-                            </div>
-
-                            <div class="my-5">
-                                <div class="space-y-2">
-                                    <label class="ti-form-label mb-0">Product Status</label>
-                                    <select class="ti-form-select sm:p-4" name="status" required>
-                                        <option selected="">Active</option>
-                                        <option>De-active</option>
-                                        <option>Pending</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="my-5">
-                                <div class="box">
-                                    <div class="box-header">
-                                        <label class="ti-form-label mb-0">Product Schedule </label>
-                                    </div>
-                                    <div class="box-body">
-                                        <div class="flex rounded-sm shadow-sm">
-
-                                            <input type="date" name="schedule" required>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="grid grid-cols-12 gap-6">
                                 <div class="col-span-12">
                                     <div class="box">
@@ -363,20 +331,16 @@
                                                 add more item
                                             </button>
                                         </div>
-
-
                                         <div class="box-body">
                                             <div id="item-data">
                                                 <div class="space-y-2  mb-3">
                                                     <label class="ti-form-label mb-0">Product Title</label>
                                                     <input type="text" name="itemTitle[]"
-                                                        class="my-auto ti-form-input" placeholder="Product Title"
-                                                        required>
+                                                        class="my-auto ti-form-input" placeholder="Product Title">
 
                                                     <label class="ti-form-label mb-0">Product Price</label>
                                                     <input type="number" name="itemPrice[]"
-                                                        class="my-auto ti-form-input" placeholder="Product Price"
-                                                        required>
+                                                        class="my-auto ti-form-input" placeholder="Product Price">
                                                 </div>
                                             </div>
                                         </div>
@@ -384,12 +348,104 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="ti-btn ti-btn-primary">Submit Product</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-4 lg:col-span-4">
+                    <div class="box">
+                        <div class="col-span-12 lg:col-span-4">
+                            <div class="box ">
+                                <div class="box-header p-3">
+                                    <label class="ti-form-label mb-0">Single Product Image Upload</label>
+                                </div>
+
+                                <div class="box-body">
+                                    <label for="fileInputOne" class="custom-file-upload">
+                                        Single Product Image
+                                    </label>
+                                    <input type="file" id="fileInputOne" accept="image/*" name="fileImg"
+                                        class="fileName" />
+                                    <div id="imagePreviewOne" class="preview-container"></div>
+                                </div>
+
+
+                                <div class="box">
+                                    <div class="box-header p-3">
+                                        <label class="ti-form-label mb-0"> Multiple Product Image Upload</label>
+                                    </div>
+
+                                    <div class="box-body">
+                                        <label for="fileInput" class="custom-file-upload">
+                                            Multiple Product Image
+                                        </label>
+                                        <input type="file" name="fileMulti[]" id="fileInput" accept="image/*"
+                                            multiple class="fileName1" />
+                                        <div id="imagePreviewOne" class="preview-container"></div>
+                                        <div id="imagePreview" class="preview-container">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-span-12 xl:col-span-4 p-3">
+                                    <div class="box ">
+                                        <div class="box-header">
+                                            <label class="ti-form-label mb-0">Select Category</label>
+                                        </div>
+                                        <div class="box-body ">
+                                            <div class="space-y-2">
+                                                <div class="flex gap-x-6">
+                                                    <div class="flex">
+                                                        @foreach ($allCategory as $item)
+                                                            <input type="checkbox" class="ti-form-checkbox mt-0.5"
+                                                                id="hs-checkbox-group-{{ $item->id }}"
+                                                                name="category[]" value="{{ $item->category_title }}">
+                                                            <label for="hs-checkbox-group-{{ $item->id }}"
+                                                                class="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70 pr-3">
+                                                                {{ $item->category_title }}
+                                                            </label>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="my-3 p-3">
+                                    <div class="space-y-2">
+                                        <label class="ti-form-label mb-0">Placement in shop</label>
+                                        <input type="number" name="position" class="my-auto ti-form-input"
+                                            placeholder="Placement" required>
+                                    </div>
+                                </div>
+
+                                <div class="my-3  p-3">
+                                    <div class="space-y-2">
+                                        <label class="ti-form-label mb-0">Product Status</label>
+                                        <select class="ti-form-select sm:p-4" name="status" required>
+                                            <option selected="">Active</option>
+                                            <option>De-active</option>
+                                            <option>Pending</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="my-3 p-3">
+                                    <div class="box">
+                                        <div class="box-header">
+                                            <label class="ti-form-label mb-0">Product Schedule </label>
+                                        </div>
+                                        <div class="box-body">
+                                            <div class="flex rounded-sm shadow-sm">
+                                                <input type="date" name="schedule" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="ti-btn ti-btn-primary">Submit Product</button>
+        </form>
     </div>
 @endsection
 
@@ -483,6 +539,12 @@
                 var itemToRemove = document.getElementById('item-' + itemId);
                 itemToRemove.remove();
             });
+        });
+    </script>
+    <script>
+        document.getElementById('short_editord').addEventListener('input', function() {
+            var shortDescriptionValue = this.value;
+            document.getElementById('seoDescription').value = shortDescriptionValue;
         });
     </script>
 @endsection

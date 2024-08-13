@@ -4,11 +4,13 @@
 <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Snippet - BBBootstrap</title>
     <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css' rel='stylesheet'>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
     <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
-
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+    <script src="{{ asset('backend/assets/js/coutomFroPro.js') }}"></script>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap");
 
@@ -252,7 +254,64 @@
 
 <body oncontextmenu='' class='snippet-body'>
     <link rel='stylesheet' href='https://sachinchoolur.github.io/lightslider/dist/css/lightslider.css'>
+    @php
+        $check_values = [];
+        $check_attribute_values = [];
+        $check_attribute_price = [];
+        $highPrice = 0;
+        $lowPrice = 0;
+        $varationCode_id = [];
+    @endphp
 
+    @foreach ($variation as $item)
+        @php
+            $attribute_ids_string = $item->attribute_id;
+            $attribute_value_string = $item->attribute_values_id;
+            $attribute_value_price = $item->price;
+            $variation_id = $item->product_code;
+
+            $attribute_ids_array = json_decode($attribute_ids_string);
+            $attribute_values_array = json_decode($attribute_value_string);
+            // Convert string elements to integers using array_map
+            $attribute_ids_integers = array_map('intval', $attribute_ids_array);
+        @endphp
+
+        @foreach ($attribute_ids_integers as $value)
+            @php
+                if (!in_array($value, $check_values)) {
+                    $check_values[] = $value;
+                }
+            @endphp
+        @endforeach
+
+        @foreach ($attribute_values_array as $value)
+            @php
+                if (!in_array($value, $check_attribute_values)) {
+                    $check_attribute_values[] = $value;
+                }
+            @endphp
+        @endforeach
+        @php
+            $getPrice = $item->price;
+            array_push($check_attribute_price, $getPrice);
+            sort($check_attribute_price);
+            $highPrice = end($check_attribute_price);
+            $lowPrice = reset($check_attribute_price);
+
+            //product code
+
+            array_push($varationCode_id, $variation_id);
+
+        @endphp
+
+        @foreach ($varationCode_id as $value)
+            @php
+                if (!in_array($value, $varationCode_id)) {
+                    $varationCode_id[] = $value;
+                }
+            @endphp
+        @endforeach
+    @endforeach
 
 
     <div class="container-fluid mt-2 mb-3">
@@ -285,13 +344,11 @@
             </div>
             <div class="col-md-7">
                 <div class="card">
-                    {{-- <div class="d-flex flex-row align-items-center">
-                        <div class="p-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i
-                                class="fa fa-star"></i> <i class="fa fa-star"></i> </div> <span
-                            class="ml-1">5.0</span>
-                    </div> --}}
                     <div class="about"> <span class="font-weight-bold"> {{ $product->ProductName }} </span>
-                        <h4 class="font-weight-bold">Price: ${{ $product->Regular_price }}</h4>
+                        <h4 class="font-weight-bold" id="price">Price: ${{ $lowPrice }} - ${{ $highPrice }}
+                        </h4>
+                        {{-- <p>Price: <span id="price">$0</span></p> --}}
+
                     </div>
                     <div class="buttons"> <button class="btn btn-outline-warning btn-long cart">Add to Cart</button>
                         <button class="btn btn-warning btn-long buy">Buy it Now</button> <button
@@ -299,59 +356,36 @@
                     </div>
                     <hr>
                     <div class="product-description">
-                        {{-- <div><span class="font-weight-bold">Color:</span><span> blue</span></div>
-                        <div class="my-color"> <label class="radio"> <input type="radio" name="gender"
-                                    value="MALE" checked> <span class="red"></span> </label> <label class="radio">
-                                <input type="radio" name="gender" value="FEMALE"> <span class="blue"></span>
-                            </label> <label class="radio"> <input type="radio" name="gender" value="FEMALE"> <span
-                                    class="green"></span> </label> <label class="radio"> <input type="radio"
-                                    name="gender" value="FEMALE"> <span class="orange"></span> </label> </div>
-                        <div class="d-flex flex-row align-items-center"> <i class="fa fa-calendar-check-o"></i> <span
-                                class="ml-1">Delivery from sweden, 15-45 days</span> </div> --}}
                         <div class="mt-2"> <span class="font-weight-bold">Description</span>
                             <p>{!! $product->ProductShortDescription !!}</p>
-                            {{-- <div class="bullets">
-                                <div class="d-flex align-items-center"> <span class="dot"></span> <span
-                                        class="bullet-text">Best in Quality</span> </div>
-                                <div class="d-flex align-items-center"> <span class="dot"></span> <span
-                                        class="bullet-text">Anti-creak joinery</span> </div>
-                                <div class="d-flex align-items-center"> <span class="dot"></span> <span
-                                        class="bullet-text">Sturdy laminate surfaces</span> </div>
-                                <div class="d-flex align-items-center"> <span class="dot"></span> <span
-                                        class="bullet-text">Relocation friendly design</span> </div>
-                                <div class="d-flex align-items-center"> <span class="dot"></span> <span
-                                        class="bullet-text">High gloss, high style</span> </div>
-                                <div class="d-flex align-items-center"> <span class="dot"></span> <span
-                                        class="bullet-text">Easy-access hydraulic storage</span> </div>
-                            </div> --}}
                         </div>
-                        {{-- <div class="mt-2"> <span class="font-weight-bold">Store</span> </div>
-                        <div class="d-flex flex-row align-items-center"> <img src="https://i.imgur.com/N2fYgvD.png"
-                                class="rounded-circle store-image">
-                            <div class="d-flex flex-column ml-1 comment-profile">
-                                <div class="comment-ratings"> <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i> <i class="fa fa-star"></i>
-                                </div> <span class="username">Rare Boutique</span> <small class="followers">25K
-                                    Followers</small>
-                            </div>
-                        </div> --}}
+
                     </div>
                 </div>
-                <div class="card mt-2"> <span>Option:</span>
-                    @foreach ($variation as $item)
-                        <div class="similar-products mt-2 d-flex flex-row">
-                            <div class="card border p-1" style="width: 19rem;margin-right: 3px;">
+                <div class="card mt-2"> <span>variation</span>
 
-                                <h6 class="card-title">
-                                    {{ $item->attribute->attribute_name }}:{{ $item->attributeValue->attribute_values_name }}
-                                </h6>
-                                <h6 class="card-title">quantity: {{ $item->quantity }}</h6>
-                                <h6 class="card-title">price: ${{ $item->price }}</h6>
-
+                    @foreach ($attribute as $attributeItem)
+                        @if (in_array($attributeItem->id, $check_values))
+                            <div class="">
+                                <label for="">{{ $attributeItem->attribute_name }} </label>
+                                <select name="" class="select_variation_option"
+                                    data-attribute-id="{{ $attributeItem->id }}">
+                                    <option value="null">select</option>
+                                    @foreach ($attributeItem->attributeValue as $attributeItemValue)
+                                        @if (in_array($attributeItemValue->attribute_values_name, $check_attribute_values))
+                                            <option value="{{ $attributeItemValue->attribute_values_name }}">
+                                                {{ $attributeItemValue->attribute_values_name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
                             </div>
-                        </div>
+                        @endif
                     @endforeach
+
                 </div>
+                @if ($varationCode_id)
+                    <input type="hidden" value="{{ $varationCode_id[0] }}" id="product_id">
+                @endif
                 <div class="card mt-2"> <span>Similar items:</span>
                     @foreach ($ProductItem as $item)
                         <div class="similar-products mt-2 d-flex flex-row">
@@ -369,25 +403,20 @@
             </div>
         </div>
     </div>
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>
+
     <script src='https://sachinchoolur.github.io/lightslider/dist/js/lightslider.js'></script>
-    <script></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script> --}}
+
     <script type='text/javascript' src='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js'>
     </script>
-    <script type='text/javascript' src=''></script>
-    <script type='text/javascript' src=''></script>
-    <script type='text/Javascript'></script>
-    <script type='text/Javascript'>
-        $('#lightSlider').lightSlider({
-                                                                                                                                                                                                                                                                                                                gallery: true,
-                                                                                                                                                                                                                                                                                                                item: 1,
-                                                                                                                                                                                                                                                                                                                loop: true,
-                                                                                                                                                                                                                                                                                                                slideMargin: 0,
-                                                                                                                                                                                                                                                                                                                thumbItem: 6                                                                                           
-                                                                                                                                                                                                                                                                                                    });
-                                                                                                                                                                                                                                                                                                        
-                                                                                                                                                                                        
-                                                                        </script>
+
+
+
+
+
+
 </body>
 
 </html>

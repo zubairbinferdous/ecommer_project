@@ -22,12 +22,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/test', function () {
+    return view('admin.Product.test');
+});
+
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Front end //
 Route::get('/product', [shopController::class, 'productShow'])->name('shop');
 Route::get('/singleProduct/{Product_id}', [shopController::class, 'singleProduct'])->name('singleProduct');
+// product price with variation
+Route::get('/getPrice', [shopController::class, "getPriceWithAjax"])->name('getPrice');
+
+
+
+
 
 
 // Back end  //
@@ -38,6 +48,8 @@ Route::get('/admin/index', [productController::class, 'adminIndex'])->name('admi
 Route::get('/addProduct', [productController::class, 'addProduct'])->name('addProduct');
 Route::get('/allProduct', [productController::class, 'allProduct'])->name('allProduct');
 Route::Post('/store.product', [productController::class, 'productStore'])->name('store.product');
+Route::get('/editProduct/{Product_id}', [productController::class, 'editProduct'])->name('editProduct');
+
 // Product variation
 Route::get('/variation/{Product_id}', [productController::class, 'ProductVariation'])->name('variation');
 Route::Post('/AddVariation', [productController::class, 'storeVariation'])->name('store.variation');

@@ -144,7 +144,7 @@
                             </ul>
                         </li>
 
-                        <li class="slide has-sub">
+                        {{-- <li class="slide has-sub">
                             <a href="javascript:void(0);" class="side-menu__item">
                                 <i class="ri-inbox-line side-menu__icon"></i>
                                 <span class="side-menu__label">Product Area</span>
@@ -156,7 +156,7 @@
                                 <li class="slide"><a href="{{ route('addProduct') }}" class="side-menu__item">Add
                                         Simple Product</a></li>
                             </ul>
-                        </li>
+                        </li> --}}
 
                         <li class="slide has-sub">
                             <a href="javascript:void(0);" class="side-menu__item">
@@ -167,20 +167,11 @@
                             <ul class="slide-menu child1"
                                 style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(128px, 490px); display: none; box-sizing: border-box;"
                                 data-popper-placement="bottom">
-                                <li class="slide"><a href="javascript:void(0);" class="side-menu__item">All
-                                        Product</a>
-                                </li>
-                                <li class="slide has-sub"><a href="javascript:void(0);" class="side-menu__item">Add
-                                        Product<i class="ri ri-arrow-right-s-line side-menu__angle"></i></a>
-                                    <ul class="slide-menu child2" style="display: none; box-sizing: border-box;">
-                                        <li class="slide"><a href="javascript:void(0);"
-                                                class="side-menu__item">Simple Product</a>
-                                        </li>
-                                        <li class="slide"><a href="javascript:void(0);"
-                                                class="side-menu__item">Variation Product</a>
-                                        </li>
-                                    </ul>
-                                </li>
+                                <li class="slide"><a href="{{ route('allProduct') }}" class="side-menu__item">All
+                                        Product</a></li>
+                                <li class="slide"><a href="{{ route('addProduct') }}" class="side-menu__item">Add
+                                        Product Area</a></li>
+
                                 <li class="slide has-sub"><a href="javascript:void(0);" class="side-menu__item">
                                         Attribute Area<i class="ri ri-arrow-right-s-line side-menu__angle"></i></a>
                                     <ul class="slide-menu child2" style="display: none; box-sizing: border-box;">
@@ -1003,10 +994,6 @@
     <script src="{{ asset('backend/assets/js/customProduct.js') }}"></script>
 
     @yield('script')
-
-
-
-
 
 </body>
 

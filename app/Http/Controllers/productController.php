@@ -46,7 +46,8 @@ class productController extends Controller
     function productStore(Request $request)
     {
 
-        // dd($request->all());
+
+
         $validator = Validator::make($request->all(), [
             'ShortDescription' => 'required|string|',
             'description' => 'required|string|',
@@ -56,73 +57,56 @@ class productController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        if ($request->file('fileImg')) {
+
+
+
+        // dd($categoryIdsAsString);
+        if ($request->input('productName')) {
 
             $img = $request->file('fileImg');
             $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-
             $saveImg = 'upload/product/' . $name_gen;
             $img->move(public_path('upload/product/'), $name_gen);
 
-            // $simg = $request->file('fileSeo');
-            // $sEOname_gen = hexdec(uniqid()) . '.' . $simg->getClientOriginalExtension();
 
-            // $saveSeoImg = 'upload/seo/' . $sEOname_gen;
-            // $simg->move(public_path('upload/seo/'), $sEOname_gen);
+            $simg = $request->file('fileSeo');
+            $sEOname_gen = hexdec(uniqid()) . '.' . $simg->getClientOriginalExtension();
+            $saveSeoImg = 'upload/seo/' . $sEOname_gen;
+            $simg->move(public_path('upload/seo/'), $sEOname_gen);
+
+
+
+            // $checkboxes = $request->input('options');
+
+            // Checkbox::create([
+            //     'options' => json_encode($checkboxes)
+            // ]);
+
+
+            $categoryIds = $request->input('category');
+            $categoryIdsAsString = implode(',', $categoryIds);
+            // dd($categoryIdsAsString);
 
             Product::insert([
                 'ProductName' => $request->productName,
-                'Regular_price' => $request->RegularPrice,
+                'Regular_price' => $request->regularPrice,
                 'Sell_price' => $request->sellPrice,
                 'ProductType' => $request->ProductType,
                 'product_id' => $request->ProductId,
                 'ProductUrl' => strtolower(str_replace(' ', '-', $request->productName)),
                 'ProductImages' => $saveImg,
                 'ProductShortDescription' => $request->ShortDescription,
-                'SeoTitle' => strtolower(str_replace(' ', '-', $request->productName)),
-                'SeoImages' => $saveImg,
-                'SeoDescription' => $request->ShortDescription,
+                'SeoTitle' =>  $request->seoTitle,
+                'SeoImages' => ($saveSeoImg) ? $saveSeoImg : $saveImg,
+                'SeoDescription' => $request->seoDescription,
                 'description' => $request->description,
-                'Category_id' => $request->category,
+                'Category_id' => $categoryIdsAsString,
                 'PlacementInShop' => $request->position,
                 'ProductStatus' => $request->status,
                 'ProductSchedule' => $request->schedule,
 
             ]);
         }
-
-
-        // if ($request->input('attributeId')) {
-
-        //     $attributeData = [
-        //         $request->input('attributeId'),
-        //     ];
-        //     $attributeDataValue = [
-        //         $request->input('attributeValue'),
-        //     ];
-
-
-        //     foreach ($request->productPrice as $key => $price) {
-
-        //         if ($request->hasFile('ImgAttribute')) {
-        //             $img = $request->file('ImgAttribute')[$key];
-        //             $name_gen = hexdec(uniqid()) . '.' . $img->getClientOriginalExtension();
-        //             $saveImg4 = 'upload/product/' . $name_gen;
-        //             $img->move(public_path('upload/product/'), $name_gen);
-        //         }
-
-        //         Variation::create([
-        //             'product_code' => $request->ProductId,
-        //             'attribute_id' => json_encode($attributeData),
-        //             'attribute_values_id' => json_encode($attributeDataValue),
-        //             'price' => $price,
-        //             'quantity' => $request->productQuantity[$key],
-        //             'AttributeDescription' => $request->AttributeDescription[$key],
-        //             'ImgAttribute' => isset($saveImg4)
-        //         ]);
-        //     }
-        // }
-
 
         if ($request->input('attributeId')) {
 
@@ -159,36 +143,6 @@ class productController extends Controller
             }
         }
 
-        // if ($request->input('attributeId')) {
-        //     $attributeData = $request->input('attributeId');
-        //     $attributeDataValue = $request->input('attributeValue');
-
-        //     $attributeLength = count($attributeDataValue);
-
-        //     foreach ($request->productPrice as $key => $price) {
-        //         if ($request->hasFile('ImgAttribute')) {
-        //             $img = $request->file('ImgAttribute')[$key];
-        //             $saveImg = 'upload/product/' . uniqid() . '.' . $img->getClientOriginalExtension();
-        //             $img->move(public_path('upload/product/'), $saveImg);
-        //         }
-
-        //         $att_arr = [];
-        //         for ($i = 1; $i < $attributeLength; $i++) {
-        //             $att_arr[] = $attributeDataValue[$i][$key];
-        //         }
-
-        //         Variation::create([
-        //             'product_code' => $request->ProductId,
-        //             'attribute_id' => json_encode($attributeData),
-        //             'attribute_values_id' => json_encode($att_arr),
-        //             'price' => $price,
-        //             'quantity' => $request->productQuantity[$key],
-        //             'AttributeDescription' => $request->AttributeDescription[$key] ?? null,
-        //             'ImgAttribute' => isset($saveImg) ? $saveImg : null,
-        //         ]);
-        //     }
-        // }
-
         if ($request->file('ExtraFileDescription')) {
             $extraFileDescriptions = $request->file('ExtraFileDescription');
             $extraDescriptions = $request->input('ExtraDescription');
@@ -206,9 +160,8 @@ class productController extends Controller
             }
         }
 
-
-
         if ($request->hasFile('fileMulti')) {
+            // dd($request->hasFile('fileMulti'));
             $itemId = $request->input('ProductId');
             foreach ($request->file('fileMulti') as $image) {
                 $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
@@ -222,11 +175,7 @@ class productController extends Controller
             }
         }
 
-
-
-
         if ($request->input('itemTitle')) {
-
 
             $itemId = $request->input('ProductId');
             $titles = (array)$request->input('itemTitle');
@@ -247,9 +196,6 @@ class productController extends Controller
         } else {
             'error';
         }
-
-
-
 
         return redirect()->route('allProduct');
     }
@@ -280,5 +226,13 @@ class productController extends Controller
             'price' => $request->price,
         ]);
         $data->save();
+    }
+
+
+    // edit Product page 
+    function editProduct($product_id)
+    {
+        $getProduct = Product::where('Product_id', $product_id)->get();
+        return view('admin.Product.editProduct', compact('getProduct'));
     }
 }

@@ -12,11 +12,16 @@ class variation extends Model
 
     public function attribute()
     {
-        return $this->belongsTo(attribute::class, 'attribute_id');
+        return $this->belongsTo(attribute::class,);
     }
 
     public function attributeValue()
     {
-        return $this->belongsTo(attributeValue::class, 'attribute_values_id');
+        return $this->belongsTo(attributeValue::class,);
+    }
+
+    public function attribute_id()
+    {
+        return $this->hasMany(attribute::class,);
     }
 }

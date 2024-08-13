@@ -17,9 +17,7 @@
 
                                                 <th scope="col">Product Name</th>
                                                 <th scope="col">Product Id</th>
-                                                <th scope="col">Transaction Id</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Variations</th>
+                                                <th scope="col">Product Type</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Actions</th>
                                             </tr>
@@ -42,18 +40,22 @@
                                                     <td>
                                                         <span class="font-semibold">{{ $item->Product_id }}</span>
                                                     </td>
-                                                    <td><a href="invoice.html">{{ $item->Category_id }}</a></td>
+
+
+                                                    {{-- <td><a href="">{{ $item->Category_id }}</a></td> --}}
+
+
                                                     <td>
-                                                        {{ $item->Regular_price }}
+                                                        {{ $item->ProductType }}
                                                     </td>
 
 
-                                                    <td>
+                                                    {{-- <td>
                                                         <a href="{{ route('variation', $item->Product_id) }}"
                                                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                                             Add Variations
                                                         </a>
-                                                    </td>
+                                                    </td> --}}
 
                                                     <td>
                                                         <span
@@ -61,7 +63,7 @@
                                                     </td>
 
                                                     <td class="font-medium space-x-2 rtl:space-x-reverse">
-                                                        <div class="hs-tooltip ti-main-tooltip">
+                                                        {{-- <div class="hs-tooltip ti-main-tooltip">
                                                             <a href="javascript:void(0);"
                                                                 class="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-primary">
                                                                 <i class="ti ti-eye"></i>
@@ -71,9 +73,9 @@
                                                                     View
                                                                 </span>
                                                             </a>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="hs-tooltip ti-main-tooltip">
-                                                            <a href="javascript:void(0);"
+                                                            <a href="{{ route('editProduct', $item->Product_id) }} "
                                                                 class="customer-edit m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary">
                                                                 <i class="ti ti-pencil"></i>
                                                                 <span
